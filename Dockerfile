@@ -1,29 +1,23 @@
-# Gunakan image Node.js untuk build aplikasi
-FROM node:16-alpine as builder
+# Use the official Node.js image as the base image
+FROM node:16
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Salin file package.json dan package-lock.json
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Salin semua file proyek
-COPY . ./
+# Copy the rest of the application code
+COPY . .
 
-# Build aplikasi React
+# Build the application
 RUN npm run build
 
-# Gunakan image Nginx untuk menyajikan aplikasi statis
-FROM nginx:1.21-alpine
+# Install serve to serve the build directory
+RUN npm install -g serve
 
-# Salin file build dari tahap sebelumnya
-COPY --from=builder /app/build /usr/share/nginx/html
-
-# Ekspos port default Nginx
-EXPOSE 80
-
-# Jalankan Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Command to run the application
+CMD ["serve", "-s", "build"]
