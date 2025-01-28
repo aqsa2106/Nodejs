@@ -27,6 +27,9 @@ jobs:
     - name: Run Tests
       run: npm test
 
+    - name: Build Application
+      run: npm run build
+
   docker:
     runs-on: ubuntu-latest
 
@@ -42,5 +45,5 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
-        docker build -t username/web-app:latest .
-        docker push username/web-app:latest
+        docker build -t aqsa21/web-app:latest .
+        docker push aqsa21/web-app:latest
