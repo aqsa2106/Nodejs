@@ -44,6 +44,3 @@ jobs:
       run: |
         docker build -t aqsa21/nodejs:latest .
         docker push aqsa21/nodejs:latest
-
-  deploy:
-    runs-on: ubuntu-latest
