@@ -1,18 +1,25 @@
 FROM node:16-alpine
 
+# Set working directory
 WORKDIR /app
 
-# Salin package.json dan package-lock.json, lalu instal dependencies
+# Salin package.json dan package-lock.json
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# Salin seluruh aplikasi
+# Salin semua file aplikasi ke dalam container
 COPY . ./
 
-# Bangun aplikasi React
+# Build aplikasi React
 RUN npm run build
 
-# Gunakan serve untuk menyajikan aplikasi React dari folder build
+# Install serve untuk menyajikan aplikasi
 RUN npm install -g serve
+
+# Ekspos port 3000
 EXPOSE 3000
+
+# Jalankan aplikasi menggunakan serve
 CMD ["serve", "-s", "build"]
