@@ -1,25 +1,29 @@
-FROM node:16-alpine
+# Gunakan image Node.js untuk build aplikasi
+FROM node:16-alpine as builder
 
 # Set working directory
 WORKDIR /app
 
-# Salin package.json dan package-lock.json
+# Salin file package.json dan package-lock.json
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Salin semua file aplikasi ke dalam container
+# Salin semua file proyek
 COPY . ./
 
 # Build aplikasi React
 RUN npm run build
 
-# Install serve untuk menyajikan aplikasi
-RUN npm install -g serve
+# Gunakan image Nginx untuk menyajikan aplikasi statis
+FROM nginx:1.21-alpine
 
-# Ekspos port 3000
-EXPOSE 3000
+# Salin file build dari tahap sebelumnya
+COPY --from=builder /app/build /usr/share/nginx/html
 
-# Jalankan aplikasi menggunakan serve
-CMD ["serve", "-s", "build"]
+# Ekspos port default Nginx
+EXPOSE 80
+
+# Jalankan Nginx
+CMD ["nginx", "-g", "daemon off;"]
