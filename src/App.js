@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
+import './index.css'; // Import the CSS file
 
 function App() {
   return (
